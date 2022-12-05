@@ -44,10 +44,13 @@ def addCart():
 
     try:
         cart = request.get_json()
-        userCart = cart_collection.find_one({"user_id":ObjectId(cart["user_id"])})
+        print(cart)
+        userCart = cart_collection.find_one({"user_id":cart["user_id"]})
 
-        if userCart:
-            cart_collection.update_one({'_id':cart['user_id']}, {"$push": {"products":cart['product_id']}}, upsert=False)
+        print(userCart)
+        if userCart is not None:
+            print("Inside if")
+            cart_collection.update_one({'user_id':cart['user_id']}, {"$push": {"products":cart['product_id']}}, upsert=False)
 
         else:
             newCart = {
